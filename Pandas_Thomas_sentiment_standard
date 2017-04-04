@@ -1,0 +1,23 @@
+from sklearn import datasets
+tweet = datasets.load_files("Twitter")
+tweet_data = tweet.data
+tweet_label = tweet.target
+print(len(tweet_label),len(tweet_data))
+from repustate import Client
+client = Client(api_key='6472879a88b1f85443f4d47145f8595519617795', version='v3')
+count = 0
+base = 1700
+num = 300
+for i in range(base, base + num):
+    f = client.sentiment(tweet.data[i], "ar")
+    print(f['score'])
+    print(tweet.filenames[i])
+    if tweet_label[i] == 1:
+       # print("Positive")
+        if f['score']>=0:
+            count = count + 1
+    else:
+        #print("Negative")
+        if f['score']<=0:
+            count = count + 1
+print(count/num)
